@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+import jwt, { SignOptions } from "jsonwebtoken";
 import { env } from "../config/env";
 import { UserModel } from "../models/user_model";
 import { ApiError } from "../utils/api_error";
@@ -31,12 +31,15 @@ export async function login_service(params: { email: string; password: string })
     });
   }
 
-  const token = jwt.sign(
-    { sub: String(user._id), role: user.role, email: user.email },
-    env.jwt_secret,
-    { expiresIn: env.jwt_expires_in },
-  );
+  
 
+const token = jwt.sign(
+  { sub: String(user?._id), role: user?.role, email: user?.email },
+  process.env.JWT_SECRET as string,
+  {
+    expiresIn: (process.env.JWT_EXPIRES_IN ?? "1d") as SignOptions["expiresIn"],
+  }
+);
   return {
     token,
     user: { id: String(user._id), email: user.email, role: user.role },
