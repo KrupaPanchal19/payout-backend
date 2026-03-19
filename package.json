@@ -6,7 +6,7 @@
   "main": "dist/server.js",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "build": "npx tsc -p tsconfig.json",
+    "build": "chmod +x node_modules/.bin/tsc && node node_modules/typescript/bin/tsc -p tsconfig.json",
     "start": "node dist/server.js",
     "seed": "tsx src/scripts/seed.ts"
   },
